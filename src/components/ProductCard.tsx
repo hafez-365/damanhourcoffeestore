@@ -4,7 +4,7 @@ import { Product } from '@/integrations/supabase/types';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { ExternalLink, ShoppingCart, X } from 'lucide-react';
+import { ExternalLink, ShoppingCart, X, Eye, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ProductCardProps {
@@ -169,62 +169,85 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const increaseQuantity = () => setQuantity(q => q + 1);
   const decreaseQuantity = () => setQuantity(q => (q > 1 ? q - 1 : 1));
 
+  const viewProductDetails = () => {
+    navigate(`/product/${product.id}`);
+  };
+
   return (
     <>
-      <Card className="w-full max-w-sm overflow-hidden rounded-md border bg-white shadow-lg transition-shadow duration-300 hover:shadow-2xl flex flex-col">
-        <div className="relative w-full aspect-[6/6] overflow-hidden p-2">
+      <Card className="w-full max-w-sm overflow-hidden rounded-xl border bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col">
+        <div className="relative w-full aspect-[4/3] overflow-hidden">
           <img
             src={product.image_url || ''}
             alt={product.name_ar}
-            className="w-full h-full object-cover rounded-md transition-transform duration-300 hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-110 cursor-pointer"
             loading="lazy"
             decoding="async"
+            onClick={viewProductDetails}
           />
+          <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full">
+            <div className="flex items-center gap-1">
+              <Star className="h-3 w-3 text-yellow-400 fill-current" />
+              <span className="text-xs font-medium text-amber-700">
+                {product.rating || '4.5'}
+              </span>
+            </div>
+          </div>
         </div>
 
         <CardContent className="p-4 flex flex-col flex-grow">
           <h2
-            className="mb-2 text-xl font-bold text-gray-800 truncate"
+            className="mb-2 text-lg font-bold text-gray-800 line-clamp-2 cursor-pointer hover:text-amber-600 transition-colors"
             title={product.name_ar}
+            onClick={viewProductDetails}
           >
             {product.name_ar}
           </h2>
 
-          <p className="mb-4 text-gray-600 line-clamp-5" title={product.description_ar}>
+          <p className="mb-3 text-sm text-gray-600 line-clamp-2" title={product.description_ar}>
             {product.description_ar}
           </p>
 
-          <div className="text-lg font-semibold text-amber-600 mb-4">
+          <div className="text-xl font-bold text-amber-600 mb-4">
             {product.price} جنيه
           </div>
 
-          <div className="flex justify-between gap-3 mt-auto">
+          <div className="flex gap-2 mt-auto">
+            <button
+              onClick={viewProductDetails}
+              className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg font-medium shadow-sm transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+              aria-label={`عرض تفاصيل ${product.name_ar}`}
+            >
+              <Eye size={14} />
+              عرض
+            </button>
+
             <button
               onClick={addToCart}
               disabled={isAddingToCart}
-              className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md font-bold shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2 disabled:opacity-75"
+              className="flex-1 bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded-lg font-medium shadow-sm transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-75"
               aria-label={`أضف ${product.name_ar} إلى السلة`}
             >
               {isAddingToCart ? (
                 <>
-                  <span className="animate-spin">↻</span>
-                  جاري الإضافة
+                  <span className="animate-spin text-xs">↻</span>
+                  إضافة
                 </>
               ) : (
                 <>
-                  <ShoppingCart size={16} />
-                  أضف إلى السلة
+                  <ShoppingCart size={14} />
+                  أضف
                 </>
               )}
             </button>
 
             <button
               onClick={openModal}
-              className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-4 py-2 rounded-md font-bold shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center gap-2"
+              className="flex-1 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-3 py-2 rounded-lg font-medium shadow-sm transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
               aria-label={`اطلب ${product.name_ar} الآن`}
             >
-              <ExternalLink size={16} />
-              اطلب الآن
+              <ExternalLink size={14} />
+              اطلب
             </button>
           </div>
         </CardContent>

@@ -39,6 +39,7 @@ const Auth = lazy(() => import('./pages/Auth'));
 const PrivacyAndTerms = lazy(() => import('./pages/PrivacyAndTerms'));
 const DeleteData = lazy(() => import('./pages/DeleteData'));
 const Admin = lazy(() => import('./pages/Admin'));
+const ProductDetail = lazy(() => import('./pages/ProductDetail'));
 
 const createQueryClient = () => new QueryClient({
   defaultOptions: {
@@ -64,6 +65,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Suspense fallback={<RouteLoading />}><Index /></Suspense>} />
         <Route path="/auth" element={<Suspense fallback={<RouteLoading />}><Auth /></Suspense>} />
+        <Route path="/product/:id" element={<Suspense fallback={<RouteLoading />}><ProductDetail /></Suspense>} />
         <Route path="/cart" element={<Suspense fallback={<RouteLoading />}><Cart /></Suspense>} />
         <Route path="/orders" element={<Suspense fallback={<RouteLoading />}><Orders /></Suspense>} />
         <Route path="/settings" element={<Suspense fallback={<RouteLoading />}><Settings /></Suspense>} />
