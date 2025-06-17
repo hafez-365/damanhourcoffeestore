@@ -1,16 +1,18 @@
+
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "@/components/ui/sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { Tables } from "@/integrations/supabase/types";
 
 const CART_STORAGE_KEY = "damanhour_cart";
 
 export interface CartItem {
   id: number; // product id
   name_ar: string;
-  description_ar: string;
+  description_ar?: string;
   price: number;
-  image_url: string;
+  image_url?: string;
   quantity: number;
   cartItemId?: string; // cart item id in Supabase
 }
@@ -30,7 +32,6 @@ const useCart = () => {
     const loadCart = async () => {
       setLoading(true);
 
-      // داخل useEffect الذي يحمل السلة من Supabase
       try {
         if (user) {
           const { data, error } = await supabase
@@ -39,6 +40,7 @@ const useCart = () => {
               `
               id,
               quantity,
+              unit_price,
               products (
                 id,
                 name_ar,
@@ -54,21 +56,23 @@ const useCart = () => {
 
           const cartItems = data
             .map((item) => {
-              // تحقق هل products مصفوفة ام كائن مفرد
               const product = Array.isArray(item.products)
                 ? item.products[0]
                 : item.products;
+              
+              if (!product) return null;
+              
               return {
-                id: product?.id,
+                id: product.id,
                 cartItemId: item.id,
-                name_ar: product?.name_ar,
-                description_ar: product?.description_ar,
-                price: product?.price,
-                image_url: product?.image_url || "",
+                name_ar: product.name_ar,
+                description_ar: product.description_ar,
+                price: Number(product.price),
+                image_url: product.image_url || "",
                 quantity: item.quantity,
               };
             })
-            .filter((item) => item.id !== undefined) as CartItem[];
+            .filter((item): item is CartItem => item !== null);
 
           setCart(cartItems);
         } else {
@@ -142,7 +146,10 @@ const useCart = () => {
           // Update quantity in Supabase
           const { error } = await supabase
             .from("cart_items")
-            .update({ quantity: existingItem.quantity + quantity })
+            .update({ 
+              quantity: existingItem.quantity + quantity,
+              total_price: (existingItem.quantity + quantity) * product.price
+            })
             .eq("id", existingItem.cartItemId);
 
           if (error) throw error;
@@ -163,6 +170,8 @@ const useCart = () => {
               user_id: user.id,
               product_id: product.id,
               quantity,
+              unit_price: product.price,
+              total_price: product.price * quantity,
             })
             .select()
             .single();
@@ -278,7 +287,10 @@ const useCart = () => {
         if (itemToUpdate.cartItemId) {
           const { error } = await supabase
             .from("cart_items")
-            .update({ quantity: newQuantity })
+            .update({ 
+              quantity: newQuantity,
+              total_price: newQuantity * itemToUpdate.price
+            })
             .eq("id", itemToUpdate.cartItemId);
 
           if (error) throw error;

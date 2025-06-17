@@ -1,11 +1,14 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Product } from '@/integrations/supabase/types';
+import { Tables } from '@/integrations/supabase/types';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { ExternalLink, ShoppingCart, X, Eye, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+
+type Product = Tables<'products'>;
 
 interface ProductCardProps {
   product: Product;
@@ -52,7 +55,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       if (existingItem) {
         // تحديث الكمية والسعر الكلي
         const newQuantity = existingItem.quantity + quantity;
-        const newTotalPrice = newQuantity * product.price;
+        const newTotalPrice = newQuantity * Number(product.price);
 
         const { error: updateError } = await supabase
           .from('cart_items')
@@ -72,8 +75,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             user_id: user.id,
             product_id: product.id,
             quantity,
-            unit_price: product.price,
-            total_price: product.price * quantity,
+            unit_price: Number(product.price),
+            total_price: Number(product.price) * quantity,
           });
 
         if (insertError) throw insertError;
@@ -143,7 +146,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         order_id: orderId,
         product_id: product.id,
         quantity,
-        unit_price: product.price,
+        unit_price: Number(product.price),
         total_price: totalPrice,
       });
 
@@ -204,7 +207,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.name_ar}
           </h2>
 
-          <p className="mb-3 text-sm text-gray-600 line-clamp-2" title={product.description_ar}>
+          <p className="mb-3 text-sm text-gray-600 line-clamp-2" title={product.description_ar || ''}>
             {product.description_ar}
           </p>
 

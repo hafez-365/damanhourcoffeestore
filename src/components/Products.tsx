@@ -1,22 +1,14 @@
-// Products.tsx
+
 import React, { useState, useEffect, useCallback } from 'react';
 import ProductCard from './ProductCard';
 import { Coffee } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useDebounce } from 'use-debounce';
-import Filters from './Filters'; // تم استدعاء المكون المنفصل
+import Filters from './Filters';
+import { Tables } from '@/integrations/supabase/types';
 
-interface Product {
-  id: number;
-  name_ar: string;
-  description_ar: string;
-  price: number;
-  image_url: string;
-  rating: number;
-  googleFormUrl: string;
-  available: boolean;
-}
+type Product = Tables<'products'>;
 
 const Products = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -39,19 +31,8 @@ const Products = () => {
 
       if (error) throw error;
 
-      const formattedProducts = data?.map(product => ({
-        id: product.id,
-        name_ar: product.name_ar || product.name || '',
-        description_ar: product.description_ar || product.description || '',
-        price: Number(product.price) || 0,
-        image_url: product.image_url || '/api/placeholder/300/200',
-        rating: product.rating || 0,
-        googleFormUrl: product.googleFormUrl || '',
-        available: product.available ?? true
-      })) || [];
-
-      setProducts(formattedProducts);
-      setFilteredProducts(formattedProducts);
+      setProducts(data || []);
+      setFilteredProducts(data || []);
     } catch (error) {
       console.error('Error fetching products:', error);
       toast({
@@ -74,7 +55,7 @@ const Products = () => {
     if (debouncedSearchTerm) {
       filtered = filtered.filter(product =>
         product.name_ar.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-        product.description_ar.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+        (product.description_ar && product.description_ar.toLowerCase().includes(debouncedSearchTerm.toLowerCase()))
       );
     }
 
@@ -90,7 +71,7 @@ const Products = () => {
 
     if (ratingFilter !== 'all') {
       const minRating = parseFloat(ratingFilter);
-      filtered = filtered.filter(product => product.rating >= minRating);
+      filtered = filtered.filter(product => (product.rating || 0) >= minRating);
     }
 
     return filtered;

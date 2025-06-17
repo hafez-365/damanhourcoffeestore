@@ -8,16 +8,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ShoppingCart, Star, Plus, Minus } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
+import { Tables } from '@/integrations/supabase/types';
 
-interface Product {
-  id: number;
-  name_ar: string;
-  description_ar: string;
-  price: number;
-  image_url: string;
-  rating: number;
-  available: boolean;
-}
+type Product = Tables<'products'>;
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -89,7 +82,7 @@ const ProductDetail = () => {
 
       if (existingItem) {
         const newQuantity = existingItem.quantity + quantity;
-        const newTotalPrice = newQuantity * product.price;
+        const newTotalPrice = newQuantity * Number(product.price);
 
         const { error: updateError } = await supabase
           .from('cart_items')
@@ -108,8 +101,8 @@ const ProductDetail = () => {
             user_id: user.id,
             product_id: product.id,
             quantity,
-            unit_price: product.price,
-            total_price: product.price * quantity,
+            unit_price: Number(product.price),
+            total_price: Number(product.price) * quantity,
           });
 
         if (insertError) throw insertError;
@@ -208,7 +201,7 @@ const ProductDetail = () => {
                     <Star
                       key={i}
                       className={`h-5 w-5 ${
-                        i < product.rating 
+                        i < (product.rating || 0)
                           ? 'text-yellow-400 fill-current' 
                           : 'text-gray-300'
                       }`}
@@ -216,7 +209,7 @@ const ProductDetail = () => {
                   ))}
                 </div>
                 <span className="text-amber-700 font-medium">
-                  ({product.rating}/5)
+                  ({product.rating || 4.5}/5)
                 </span>
               </div>
 
@@ -265,7 +258,7 @@ const ProductDetail = () => {
                   <div className="flex items-center justify-between text-lg font-semibold">
                     <span className="text-amber-900">الإجمالي:</span>
                     <span className="text-amber-600">
-                      {(product.price * quantity).toFixed(2)} جنيه
+                      {(Number(product.price) * quantity).toFixed(2)} جنيه
                     </span>
                   </div>
 
