@@ -182,8 +182,7 @@ const Cart = () => {
       const validAddresses = (data || [])
         .filter(
           (address) =>
-            address &&
-            address.id &&
+            address?.id &&
             address.user_id &&
             address.governorate &&
             address.city &&
