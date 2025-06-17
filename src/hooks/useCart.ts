@@ -107,7 +107,7 @@ const useCart = () => {
 
   // Add to cart with Supabase sync
   const addToCart = useCallback(
-    async (product: Omit<CartItem, "quantity">, quantity: number = 1) => {
+    async (product: Omit<CartItem, "quantity">, quantity = 1) => {
       if (!user) {
         // Guest mode - localStorage only
         setCart((prevCart) => {
