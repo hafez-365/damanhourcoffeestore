@@ -9,491 +9,171 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      addresses: {
+      books_metadata: {
         Row: {
-          city: string
+          author: string | null
           created_at: string | null
-          governorate: string
-          id: string
-          is_default: boolean | null
-          phone: string | null
-          postal_code: string | null
-          street: string
-          title: string
-          updated_at: string | null
-          user_id: string | null
-        }
-        Insert: {
-          city: string
-          created_at?: string | null
-          governorate: string
-          id?: string
-          is_default?: boolean | null
-          phone?: string | null
-          postal_code?: string | null
-          street: string
-          title: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          city?: string
-          created_at?: string | null
-          governorate?: string
-          id?: string
-          is_default?: boolean | null
-          phone?: string | null
-          postal_code?: string | null
-          street?: string
-          title?: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      cart_items: {
-        Row: {
-          created_at: string | null
-          id: string
-          product_id: number
-          quantity: number
-          total_price: number | null
-          unit_price: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          product_id: number
-          quantity?: number
-          total_price?: number | null
-          unit_price?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          product_id?: number
-          quantity?: number
-          total_price?: number | null
-          unit_price?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "cart_items_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      categories: {
-        Row: {
-          created_at: string | null
+          creation_date: string | null
+          creator: string | null
           description: string | null
-          id: string
-          image_url: string | null
-          name: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          name: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          name?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      contact_messages: {
-        Row: {
-          created_at: string | null
-          email: string
-          id: string
-          is_read: boolean | null
-          message: string
-          name: string
-          subject: string
-        }
-        Insert: {
-          created_at?: string | null
-          email: string
-          id?: string
-          is_read?: boolean | null
-          message: string
-          name: string
-          subject: string
-        }
-        Update: {
-          created_at?: string | null
-          email?: string
-          id?: string
-          is_read?: boolean | null
-          message?: string
-          name?: string
-          subject?: string
-        }
-        Relationships: []
-      }
-      favorites: {
-        Row: {
-          id: string
-          product_id: string
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          product_id: string
-          user_id: string
-        }
-        Update: {
-          id?: string
-          product_id?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
-      feedback: {
-        Row: {
-          comment: string | null
-          created_at: string
-          id: string | null
-          name: string | null
-          rating: number | null
-          user_id: string
-        }
-        Insert: {
-          comment?: string | null
-          created_at?: string
-          id?: string | null
-          name?: string | null
-          rating?: number | null
-          user_id?: string
-        }
-        Update: {
-          comment?: string | null
-          created_at?: string
-          id?: string | null
-          name?: string | null
-          rating?: number | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-      order_items: {
-        Row: {
-          created_at: string | null
-          id: string
-          order_id: string
-          product_id: number
-          quantity: number
-          total_price: number
-          unit_price: number
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          order_id: string
-          product_id: number
-          quantity: number
-          total_price: number
-          unit_price: number
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          order_id?: string
-          product_id?: number
-          quantity?: number
-          total_price?: number
-          unit_price?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "order_items_order_id_fkey"
-            columns: ["order_id"]
-            isOneToOne: false
-            referencedRelation: "orders"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "order_items_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      orders: {
-        Row: {
-          created_at: string | null
-          delivery_date: string | null
-          id: string
-          notes: string | null
-          order_number: string | null
-          payment_status: Database["public"]["Enums"]["payment_status_type"]
-          shipping_address: Json
-          status: Database["public"]["Enums"]["order_status_type"]
-          stripe_payment_intent_id: string | null
-          total_amount: number
-          tracking_number: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          delivery_date?: string | null
-          id?: string
-          notes?: string | null
-          order_number?: string | null
-          payment_status: Database["public"]["Enums"]["payment_status_type"]
-          shipping_address: Json
-          status: Database["public"]["Enums"]["order_status_type"]
-          stripe_payment_intent_id?: string | null
-          total_amount: number
-          tracking_number?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          delivery_date?: string | null
-          id?: string
-          notes?: string | null
-          order_number?: string | null
-          payment_status?: Database["public"]["Enums"]["payment_status_type"]
-          shipping_address?: Json
-          status?: Database["public"]["Enums"]["order_status_type"]
-          stripe_payment_intent_id?: string | null
-          total_amount?: number
-          tracking_number?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-      products: {
-        Row: {
-          available: boolean | null
-          category: string | null
-          created_at: string
-          description: string | null
-          description_ar: string | null
-          discount_percentage: number | null
-          featured: boolean | null
-          googleFormUrl: string | null
+          file_name: string | null
+          has_acroform: boolean | null
+          has_collection: boolean | null
+          has_signatures: boolean | null
+          has_xfa: boolean | null
           id: number
-          image_url: string | null
-          name: string | null
-          name_ar: string | null
-          price: number | null
-          rating: number | null
-          stock_quantity: number | null
+          is_encrypted: boolean | null
+          is_linearized: boolean | null
+          language: string | null
+          modification_date: string | null
+          num_pages: number | null
+          pdf_version: string | null
+          producer: string | null
+          publisher: string | null
+          raw_metadata: Json | null
+          subject: string | null
+          title: string | null
         }
         Insert: {
-          available?: boolean | null
-          category?: string | null
-          created_at?: string
+          author?: string | null
+          created_at?: string | null
+          creation_date?: string | null
+          creator?: string | null
           description?: string | null
-          description_ar?: string | null
-          discount_percentage?: number | null
-          featured?: boolean | null
-          googleFormUrl?: string | null
+          file_name?: string | null
+          has_acroform?: boolean | null
+          has_collection?: boolean | null
+          has_signatures?: boolean | null
+          has_xfa?: boolean | null
           id?: number
-          image_url?: string | null
-          name?: string | null
-          name_ar?: string | null
-          price?: number | null
-          rating?: number | null
-          stock_quantity?: number | null
+          is_encrypted?: boolean | null
+          is_linearized?: boolean | null
+          language?: string | null
+          modification_date?: string | null
+          num_pages?: number | null
+          pdf_version?: string | null
+          producer?: string | null
+          publisher?: string | null
+          raw_metadata?: Json | null
+          subject?: string | null
+          title?: string | null
         }
         Update: {
-          available?: boolean | null
-          category?: string | null
-          created_at?: string
+          author?: string | null
+          created_at?: string | null
+          creation_date?: string | null
+          creator?: string | null
           description?: string | null
-          description_ar?: string | null
-          discount_percentage?: number | null
-          featured?: boolean | null
-          googleFormUrl?: string | null
+          file_name?: string | null
+          has_acroform?: boolean | null
+          has_collection?: boolean | null
+          has_signatures?: boolean | null
+          has_xfa?: boolean | null
           id?: number
-          image_url?: string | null
-          name?: string | null
-          name_ar?: string | null
-          price?: number | null
-          rating?: number | null
-          stock_quantity?: number | null
+          is_encrypted?: boolean | null
+          is_linearized?: boolean | null
+          language?: string | null
+          modification_date?: string | null
+          num_pages?: number | null
+          pdf_version?: string | null
+          producer?: string | null
+          publisher?: string | null
+          raw_metadata?: Json | null
+          subject?: string | null
+          title?: string | null
         }
         Relationships: []
       }
-      profiles: {
+      n8n_chat_histories: {
         Row: {
-          address: string | null
-          avatar_url: string | null
-          city: string | null
-          country: string | null
-          created_at: string | null
-          full_name: string | null
-          id: string
-          phone: string | null
-          postal_code: string | null
-          role: Database["public"]["Enums"]["user_role_type"] | null
-          updated_at: string | null
+          id: number
+          message: Json
+          session_id: string
         }
         Insert: {
-          address?: string | null
-          avatar_url?: string | null
-          city?: string | null
-          country?: string | null
-          created_at?: string | null
-          full_name?: string | null
-          id: string
-          phone?: string | null
-          postal_code?: string | null
-          role?: Database["public"]["Enums"]["user_role_type"] | null
-          updated_at?: string | null
+          id?: number
+          message: Json
+          session_id: string
         }
         Update: {
-          address?: string | null
-          avatar_url?: string | null
-          city?: string | null
-          country?: string | null
-          created_at?: string | null
-          full_name?: string | null
-          id?: string
-          phone?: string | null
-          postal_code?: string | null
-          role?: Database["public"]["Enums"]["user_role_type"] | null
-          updated_at?: string | null
+          id?: number
+          message?: Json
+          session_id?: string
         }
         Relationships: []
       }
-      site_settings: {
+      secret: {
         Row: {
-          created_at: string | null
-          id: string
-          key: string
-          type: string | null
-          updated_at: string | null
-          value: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          key: string
-          type?: string | null
-          updated_at?: string | null
-          value?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          key?: string
-          type?: string | null
-          updated_at?: string | null
-          value?: string | null
-        }
-        Relationships: []
-      }
-      user: {
-        Row: {
+          "api key": string | null
           created_at: string
           id: number
+          node: string | null
         }
         Insert: {
+          "api key"?: string | null
           created_at?: string
           id?: number
+          node?: string | null
         }
         Update: {
+          "api key"?: string | null
           created_at?: string
           id?: number
+          node?: string | null
         }
         Relationships: []
       }
-      user_addresses: {
+      test: {
         Row: {
-          city: string
-          created_at: string | null
-          governorate: string
-          id: string
-          is_default: boolean | null
-          notes: string | null
-          street: string
-          updated_at: string | null
-          user_id: string
+          date: string | null
+          email: string | null
+          id: number
+          memory: string | null
+          name: string
+          phone: number | null
+          sessionId: string | null
+          time: string | null
         }
         Insert: {
-          city: string
-          created_at?: string | null
-          governorate: string
-          id?: string
-          is_default?: boolean | null
-          notes?: string | null
-          street: string
-          updated_at?: string | null
-          user_id: string
+          date?: string | null
+          email?: string | null
+          id?: number
+          memory?: string | null
+          name: string
+          phone?: number | null
+          sessionId?: string | null
+          time?: string | null
         }
         Update: {
-          city?: string
-          created_at?: string | null
-          governorate?: string
-          id?: string
-          is_default?: boolean | null
-          notes?: string | null
-          street?: string
-          updated_at?: string | null
-          user_id?: string
+          date?: string | null
+          email?: string | null
+          id?: number
+          memory?: string | null
+          name?: string
+          phone?: number | null
+          sessionId?: string | null
+          time?: string | null
         }
         Relationships: []
       }
-      wrappers_fdw_stats: {
+      user_knowledge_base: {
         Row: {
-          bytes_in: number | null
-          bytes_out: number | null
-          create_times: number | null
-          created_at: string
-          fdw_name: string
+          content: string | null
+          embedding: string | null
+          id: number
           metadata: Json | null
-          rows_in: number | null
-          rows_out: number | null
-          updated_at: string
         }
         Insert: {
-          bytes_in?: number | null
-          bytes_out?: number | null
-          create_times?: number | null
-          created_at?: string
-          fdw_name: string
+          content?: string | null
+          embedding?: string | null
+          id?: never
           metadata?: Json | null
-          rows_in?: number | null
-          rows_out?: number | null
-          updated_at?: string
         }
         Update: {
-          bytes_in?: number | null
-          bytes_out?: number | null
-          create_times?: number | null
-          created_at?: string
-          fdw_name?: string
+          content?: string | null
+          embedding?: string | null
+          id?: never
           metadata?: Json | null
-          rows_in?: number | null
-          rows_out?: number | null
-          updated_at?: string
         }
         Relationships: []
       }
@@ -502,246 +182,110 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      airtable_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      binary_quantize: {
+        Args: { "": string } | { "": unknown }
         Returns: unknown
       }
-      airtable_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      airtable_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      auth0_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      halfvec_avg: {
+        Args: { "": number[] }
         Returns: unknown
       }
-      auth0_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      auth0_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      big_query_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      halfvec_out: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      big_query_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
+      halfvec_send: {
+        Args: { "": unknown }
+        Returns: string
       }
-      big_query_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
+      halfvec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
       }
-      click_house_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      hnsw_bit_support: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      click_house_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      click_house_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      cognito_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      hnsw_halfvec_support: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      cognito_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      cognito_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      firebase_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      hnsw_sparsevec_support: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      firebase_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      firebase_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      hello_world_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      hnswhandler: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      hello_world_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      hello_world_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      logflare_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      ivfflat_bit_support: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      logflare_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      logflare_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      mssql_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      ivfflat_halfvec_support: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      mssql_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      mssql_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      redis_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      ivfflathandler: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      redis_fdw_meta: {
-        Args: Record<PropertyKey, never>
+      l2_norm: {
+        Args: { "": unknown } | { "": unknown }
+        Returns: number
+      }
+      l2_normalize: {
+        Args: { "": string } | { "": unknown } | { "": unknown }
+        Returns: string
+      }
+      match_documents: {
+        Args: { query_embedding: string; match_count?: number; filter?: Json }
         Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
+          id: number
+          content: string
+          metadata: Json
+          similarity: number
         }[]
       }
-      redis_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      s3_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      sparsevec_out: {
+        Args: { "": unknown }
         Returns: unknown
       }
-      s3_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
+      sparsevec_send: {
+        Args: { "": unknown }
+        Returns: string
       }
-      s3_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
+      sparsevec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
       }
-      stripe_fdw_handler: {
-        Args: Record<PropertyKey, never>
+      vector_avg: {
+        Args: { "": number[] }
+        Returns: string
+      }
+      vector_dims: {
+        Args: { "": string } | { "": unknown }
+        Returns: number
+      }
+      vector_norm: {
+        Args: { "": string }
+        Returns: number
+      }
+      vector_out: {
+        Args: { "": string }
         Returns: unknown
       }
-      stripe_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
+      vector_send: {
+        Args: { "": string }
+        Returns: string
       }
-      stripe_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
-      }
-      wasm_fdw_handler: {
-        Args: Record<PropertyKey, never>
-        Returns: unknown
-      }
-      wasm_fdw_meta: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          name: string
-          version: string
-          author: string
-          website: string
-        }[]
-      }
-      wasm_fdw_validator: {
-        Args: { options: string[]; catalog: unknown }
-        Returns: undefined
+      vector_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
       }
     }
     Enums: {
-      order_status:
-        | "pending"
-        | "confirmed"
-        | "processing"
-        | "shipped"
-        | "delivered"
-        | "cancelled"
-      order_status_type:
-        | "pending"
-        | "processing"
-        | "shipped"
-        | "delivered"
-        | "cancelled"
-      payment_status: "pending" | "paid" | "failed" | "refunded"
-      payment_status_type: "pending" | "paid" | "failed" | "refunded"
-      user_role: "user" | "admin"
-      user_role_type: "admin" | "user"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -856,26 +400,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      order_status: [
-        "pending",
-        "confirmed",
-        "processing",
-        "shipped",
-        "delivered",
-        "cancelled",
-      ],
-      order_status_type: [
-        "pending",
-        "processing",
-        "shipped",
-        "delivered",
-        "cancelled",
-      ],
-      payment_status: ["pending", "paid", "failed", "refunded"],
-      payment_status_type: ["pending", "paid", "failed", "refunded"],
-      user_role: ["user", "admin"],
-      user_role_type: ["admin", "user"],
-    },
+    Enums: {},
   },
 } as const
